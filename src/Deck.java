@@ -5,9 +5,9 @@ import java.util.Stack;
 
 class Deck {
 private static final int amoutOfCards = 52;	
-Card card;
-Stack<Card> stack = new Stack<Card>();
-Stack<Card> discarded = new Stack<Card>();
+private Card card;
+private Stack<Card> stack = new Stack<Card>();
+private Stack<Card> discarded = new Stack<Card>();
 
 public Deck() {
 	for(Suit s : Suit.values()) {
@@ -17,9 +17,12 @@ public Deck() {
 	}
 }
 public void popCard(){
+	
 	card = stack.pop();
 	discarded.push(card);
-	
+	if(stack.empty()) {
+		switchStacks();		
+	}
 }
 private void switchStacks() {
 	Stack<Card> temp;
@@ -29,21 +32,22 @@ private void switchStacks() {
 }
 public void show(){
 	while(!stack.empty()){
-		popCard();
+		card = stack.pop();
+		discarded.push(card);
 		System.out.println(card);
 	}
-
+	switchStacks();
+	while(!stack.empty()){
+		card = stack.pop();
+		discarded.push(card);
+	}
 	switchStacks();
 	System.out.println("########################### END OF STACK #####################################");
 }
 public void shuffle() {
 	Random rand = new Random();
 	Set<Integer> indexes = new LinkedHashSet<Integer>();
-	
-	while(indexes.size() < 52) {
-		indexes.add(rand.nextInt(52));	
-	}
-	System.out.println(indexes);
+
 	Card[] cards = new Card[amoutOfCards];
 	
 	int i = 0;
@@ -51,12 +55,12 @@ public void shuffle() {
 		cards[i] = stack.pop();
 		i++;
 	}
-	
+	while(indexes.size() < i) {
+		indexes.add(rand.nextInt(i));	
+	}
+	System.out.println(indexes);
 	for(Integer j : indexes) {
 		stack.push(cards[j]);
-	}
-	while(!discarded.empty()) {
-		discarded.pop();
 	}
 }
 }
