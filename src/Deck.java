@@ -4,48 +4,58 @@ import java.util.Set;
 import java.util.Stack;
 
 class Deck {
-private static final int amoutOfCards = 52;	
-private Card card;
-private Stack<Card> stack = new Stack<Card>();
-private Stack<Card> discarded = new Stack<Card>();
+final protected static int amoutOfCards = 52;
+protected int amoutOfDecks = 1;
+protected Card card;
+protected Stack<Card> stack = new Stack<Card>();
 
 public Deck() {
-	for(Suit s : Suit.values()) {
-		for(CardName c: CardName.values()) {
-			stack.push(new Card(s,c));
+	
+	addDeck();
+	
+}
+public Deck(int amoutOfDecks) {
+	
+	this.amoutOfDecks = amoutOfDecks;
+	addDeck();
+}
+
+public void addDeck() {
+	for(int i = 0; i < amoutOfDecks; i++) {
+		for(Suit s : Suit.values()) {
+			for(CardName c: CardName.values()) {
+				stack.push(new Card(s,c));
+			}
 		}
 	}
 }
 public Card drawCard(){
 	
 	card = stack.pop();
-	discarded.push(card);
-	if(stack.empty()) {
-		switchStacks();		
+	if(stack.isEmpty()) {
+		addDeck();		
 	}
 	return card;
 }
 public Card getCard(){
 	return card;
 }
-private void switchStacks() {
-	Stack<Card> temp;
-	temp = stack;
-	stack = discarded;
-	discarded = temp;
-}
+
 public void show(){
-	while(!stack.empty()){
-		card = stack.pop();
-		discarded.push(card);
-		System.out.println(card);
+	Stack<Card> temp = new Stack<Card>();
+	Card shownCard;
+	while(!stack.isEmpty()){
+		shownCard = stack.pop();
+		temp.push(shownCard);
+		System.out.println(shownCard);
 	}
-	switchStacks();
-	while(!stack.empty()){
-		card = stack.pop();
-		discarded.push(card);
+	while(!temp.isEmpty()) {
+		
+		stack.push(temp.pop());
+		
 	}
-	switchStacks();
+	
+
 	System.out.println("########################### END OF STACK #####################################");
 }
 public void shuffle() {
@@ -55,22 +65,21 @@ public void shuffle() {
 	Card[] cards = new Card[amoutOfCards];
 	
 	int i = 0;
-	while(!stack.empty()) {
+	while(!stack.isEmpty()) {
 		cards[i] = stack.pop();
 		i++;
 	}
 	while(indexes.size() < i) {
 		indexes.add(rand.nextInt(i));	
 	}
-	//System.out.println(indexes);
 	for(Integer j : indexes) {
 		stack.push(cards[j]);
 	}
 }
 public void reset() {
-	while(!discarded.empty()) {
-		stack.push(discarded.pop());
+	while(!stack.isEmpty()) {
+		stack.pop();
 	}
-
+	addDeck();
 }
 }

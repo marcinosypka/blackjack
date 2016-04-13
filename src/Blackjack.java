@@ -1,10 +1,10 @@
-import java.io.IOException;
+import java.util.Scanner;
 
 public class Blackjack {
 	Deck deck;
 	Card card;
 	Integer sum;
-	Character c;
+	String s;
 	
 	Blackjack() {	
 		deck = new Deck();
@@ -14,11 +14,11 @@ public class Blackjack {
 	void play(){
 		while(true) {
 		show();
-		c = decision();
-		if(c == 'y') {
+		s = decision();
+		if(s.equals("y")) {
 			draw();
 		}
-		if(c == 'n') {
+		if(s.equals("n")) {
 			return;
 		}
 		}
@@ -32,13 +32,12 @@ public class Blackjack {
 		card = deck.drawCard();
 		sum += card.getValue();
 	}
-	Character decision() {
-		Character c = null;
-		try {
-			c = (char)System.in.read();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return c;
+	String decision() {
+		Scanner reader = new Scanner(System.in);
+		String n = reader.nextLine();
+		//reader.close();
+		n.toLowerCase();
+		return n;
+		
 	}
 }
