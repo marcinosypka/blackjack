@@ -5,12 +5,16 @@ public class Card {
 	
 	private Suit suit;
 	private CardName cardName;
+	private int value;
 	
 	public Card(Suit suit, CardName cardName) {
 		this.suit = suit;
 		this.cardName = cardName;
+		value = cardName.getCardValue();
 	}
-	
+	public int getValue() {
+		return value;
+	}
 	public Suit getSuit() {
 		return suit;
 	}

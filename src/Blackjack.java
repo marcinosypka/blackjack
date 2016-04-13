@@ -2,61 +2,43 @@ import java.io.IOException;
 
 public class Blackjack {
 	Deck deck;
+	Card card;
+	Integer sum;
 	Character c;
 	
-	Blackjack() {
-		try{
-			
+	Blackjack() {	
 		deck = new Deck();
-		c = '1';
-		game();
+		deck.shuffle();
+		sum = 0;
 	}
-	  catch(IOException e)
-	  {
-	  System.out.println("IOException has been caught");
-	  }
-	}
-	void game() throws IOException {
+	void play(){
 		while(true) {
-			show(c);
-			c = (char) System.in.read();
-			if(c == 'q') {
-				return;
-			}
-			
-			
+		show();
+		c = decision();
+		if(c == 'y') {
+			draw();
+		}
+		if(c == 'n') {
+			return;
+		}
 		}
 	}
-	void show(Character c) { 
-		System.out.println("################################################################################");
-		System.out.println("################################################################################");
-		System.out.println("########################    BLACKJACK   ########################################");
-		switch(c) {
-		case '1':
-			helloScreen();
-			break;		
+	void show() {
+		System.out.println("You' ve got: " + sum + ".");
+		System.out.println("Do you want to draw a card ?");
+		System.out.println("Y/N ?");
+	}
+	void draw() {
+		card = deck.drawCard();
+		sum += card.getValue();
+	}
+	Character decision() {
+		Character c = null;
+		try {
+			c = (char)System.in.read();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		System.out.println("################################################################################");
-		System.out.println("################################################################################");
-		
+		return c;
 	}
-	void helloScreen() {
-		System.out.println("");
-		System.out.println("###                   Witaj w grze blackjack.                              ###");
-		System.out.println("");
-		System.out.println("###         Nacisnij \"n\" aby rozpoczac nowa gre.                           ###");
-		System.out.println("");
-		System.out.println("###         Nacisnij \"q\" aby zakonczyc dzialanie programu.                 ###");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-	}
-
 }

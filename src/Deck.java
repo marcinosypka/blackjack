@@ -16,13 +16,17 @@ public Deck() {
 		}
 	}
 }
-public void popCard(){
+public Card drawCard(){
 	
 	card = stack.pop();
 	discarded.push(card);
 	if(stack.empty()) {
 		switchStacks();		
 	}
+	return card;
+}
+public Card getCard(){
+	return card;
 }
 private void switchStacks() {
 	Stack<Card> temp;
@@ -58,9 +62,15 @@ public void shuffle() {
 	while(indexes.size() < i) {
 		indexes.add(rand.nextInt(i));	
 	}
-	System.out.println(indexes);
+	//System.out.println(indexes);
 	for(Integer j : indexes) {
 		stack.push(cards[j]);
 	}
+}
+public void reset() {
+	while(!discarded.empty()) {
+		stack.push(discarded.pop());
+	}
+
 }
 }
